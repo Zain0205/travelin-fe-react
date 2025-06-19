@@ -1,9 +1,38 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import Login from "./pages/auth/Login"
+import Register from "./pages/auth/Register"
+import AdminDashboard from "./pages/dashboard/AdminDashboard"
+import AgentDashboard from "./pages/dashboard/AgentDashboard"
+import LandingPage from "./pages/landing-page/LandingPage"
+
+
+let router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LandingPage />
+  },
+  {
+    path: "/login",
+    element: <Login />
+  },
+  {
+    path: "/register",
+    element: <Register />
+  },
+  {
+    path: "/dashboard/admin",
+    element: <AdminDashboard />
+  },
+  {
+    path: "/dashboard/agent",
+    element: <AgentDashboard />
+  },
+])
 
 function App() {
-
   return (
     <>
-      <h1 className="text-center text-3xl margin-10">Travelin Coming Soon</h1>
+      <RouterProvider router={router} />
     </>
   )
 }
