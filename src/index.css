@@ -41,7 +41,7 @@
   --font-sans: Montserrat, sans-serif;
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   --font-mono: monospace;
-  --radius: 0.025rem;
+  --radius: 0.625rem;
   --shadow-2xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.03);
   --shadow-xs: 0px 1px 3px 0px hsl(0 0% 0% / 0.03);
   --shadow-sm: 0px 1px 3px 0px hsl(0 0% 0% / 0.05), 0px 1px 2px -1px hsl(0 0% 0% / 0.05);
