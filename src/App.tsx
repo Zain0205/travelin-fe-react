@@ -11,6 +11,10 @@ import AgentSidebar from "./pages/dashboard/components/AgentSidebar";
 import AgentFlight from "./pages/dashboard/agent/AgentFlight";
 import AddFlight from "./pages/dashboard/agent/AddFlight";
 import AddPackage from "./pages/dashboard/agent/AddPackage";
+import AgentHotel from "./pages/dashboard/agent/AgentHotel";
+import AddHotel from "./pages/dashboard/agent/AddHotel";
+import EditFlight from "./pages/dashboard/agent/EditFlight";
+import EditPackage from "./pages/dashboard/agent/EditPackage";
 
 let router = createBrowserRouter([
   {
@@ -49,8 +53,12 @@ let router = createBrowserRouter([
       { path: "dashboard", element: <AgentDashboard /> },
       { path: "packages", element: <AgentTravelPackage /> },
       { path: "packages/add", element: <AddPackage /> },
+      { path: "packages/edit/:id", element: <EditPackage /> },
       { path: "flights", element: <AgentFlight /> },
       { path: "flights/add", element: <AddFlight /> },
+      { path: "flights/edit/:id", element: <EditFlight /> },
+      { path: "hotels", element: <AgentHotel /> },
+      { path: "hotels/add", element: <AddHotel /> },
     ],
   },
 ]);
