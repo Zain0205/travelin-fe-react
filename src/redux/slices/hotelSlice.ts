@@ -1,10 +1,10 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "@/lib/axios"; // Your axios instance
-import type { CreateHotelData, HotelFilters, HotelPagination, HotelState } from "@/types/hotelTypes";
+import type { CreateHotelData, HotelFilters, HotelPagination } from "@/types/hotelTypes";
 
-const initialState: HotelState = {
+const initialState: any = {
   hotels: [],
-  currentHotel: null,
+  currentHotel: {},
   loading: false,
   error: null,
   pagination: {
@@ -15,99 +15,81 @@ const initialState: HotelState = {
   },
 };
 
-// Async thunks
-export const fetchHotels = createAsyncThunk(
-  "hotel/fetchHotels",
-  async (params: { pagination?: HotelPagination; filters?: HotelFilters }) => {
-    const { pagination = { page: 1, limit: 10 }, filters = {} } = params;
-    
-    const queryParams = new URLSearchParams({
-      page: pagination.page.toString(),
-      limit: pagination.limit.toString(),
-      ...(filters.name && { name: filters.name }),
-      ...(filters.location && { location: filters.location }),
+export const fetchHotels = createAsyncThunk("hotel/fetchHotels", async (params: { pagination?: HotelPagination; filters?: HotelFilters }) => {
+  const { pagination = { page: 1, limit: 10 }, filters = {} } = params;
+
+  const queryParams = new URLSearchParams({
+    page: pagination.page.toString(),
+    limit: pagination.limit.toString(),
+    ...(filters.name && { name: filters.name }),
+    ...(filters.location && { location: filters.location }),
+  });
+
+  const response = await api.get(`/hotel?${queryParams}`);
+  return response.data;
+});
+
+export const fetchHotelById = createAsyncThunk("hotel/fetchHotelById", async (id: number) => {
+  const response = await api.get(`/hotel/${id}`);
+  return response.data;
+});
+
+export const createHotel = createAsyncThunk("hotel/createHotel", async (hotelData: CreateHotelData) => {
+  const formData = new FormData();
+
+  formData.append("name", hotelData.name);
+  formData.append("description", hotelData.description);
+  formData.append("location", hotelData.location);
+  formData.append("pricePerNight", hotelData.pricePerNight.toString());
+
+  if (hotelData.thumbnail) {
+    formData.append("thumbnail", hotelData.thumbnail);
+  }
+
+  if (hotelData.hotelImages) {
+    hotelData.hotelImages.forEach((image) => {
+      formData.append("hotelImages", image);
     });
-
-    const response = await api.get(`/hotel?${queryParams}`);
-    return response.data;
   }
-);
 
-export const fetchHotelById = createAsyncThunk(
-  "hotel/fetchHotelById",
-  async (id: number) => {
-    const response = await api.get(`/hotel/${id}`);
-    return response.data;
+  const response = await api.post("/hotel/create", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+});
+
+export const updateHotel = createAsyncThunk("hotel/updateHotel", async ({ id, hotelData }: { id: number; hotelData: Partial<CreateHotelData> }) => {
+  const formData = new FormData();
+
+  if (hotelData.name) formData.append("name", hotelData.name);
+  if (hotelData.description) formData.append("description", hotelData.description);
+  if (hotelData.location) formData.append("location", hotelData.location);
+  if (hotelData.pricePerNight) formData.append("pricePerNight", hotelData.pricePerNight.toString());
+
+  if (hotelData.thumbnail) {
+    formData.append("thumbnail", hotelData.thumbnail);
   }
-);
 
-export const createHotel = createAsyncThunk(
-  "hotel/createHotel",
-  async (hotelData: CreateHotelData) => {
-    const formData = new FormData();
-    
-    formData.append("name", hotelData.name);
-    formData.append("description", hotelData.description);
-    formData.append("location", hotelData.location);
-    formData.append("pricePerNight", hotelData.pricePerNight.toString());
-    formData.append("amenities", JSON.stringify(hotelData.amenities));
-    
-    if (hotelData.thumbnail) {
-      formData.append("thumbnail", hotelData.thumbnail);
-    }
-    
-    if (hotelData.hotelImages) {
-      hotelData.hotelImages.forEach((image) => {
-        formData.append("hotelImages", image);
-      });
-    }
-
-    const response = await api.post("/hotel/create", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+  if (hotelData.hotelImages) {
+    hotelData.hotelImages.forEach((image) => {
+      formData.append("hotelImages", image);
     });
-    return response.data;
   }
-);
 
-export const updateHotel = createAsyncThunk(
-  "hotel/updateHotel",
-  async ({ id, hotelData }: { id: number; hotelData: Partial<CreateHotelData> }) => {
-    const formData = new FormData();
-    
-    if (hotelData.name) formData.append("name", hotelData.name);
-    if (hotelData.description) formData.append("description", hotelData.description);
-    if (hotelData.location) formData.append("location", hotelData.location);
-    if (hotelData.pricePerNight) formData.append("pricePerNight", hotelData.pricePerNight.toString());
-    if (hotelData.amenities) formData.append("amenities", JSON.stringify(hotelData.amenities));
-    
-    if (hotelData.thumbnail) {
-      formData.append("thumbnail", hotelData.thumbnail);
-    }
-    
-    if (hotelData.hotelImages) {
-      hotelData.hotelImages.forEach((image) => {
-        formData.append("hotelImages", image);
-      });
-    }
+  const response = await api.patch(`/hotel/update/${id}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+});
 
-    const response = await api.patch(`/hotel/update/${id}`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return response.data;
-  }
-);
-
-export const deleteHotel = createAsyncThunk(
-  "hotel/deleteHotel",
-  async (id: number) => {
-    await api.delete(`/hotel/delete/${id}`);
-    return id;
-  }
-);
+export const deleteHotel = createAsyncThunk("hotel/deleteHotel", async (id: number) => {
+  await api.delete(`/hotel/delete/${id}`);
+  return id;
+});
 
 const hotelSlice = createSlice({
   name: "hotel",
@@ -136,7 +118,7 @@ const hotelSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to fetch hotels";
       })
-      
+
       // Fetch hotel by ID
       .addCase(fetchHotelById.pending, (state) => {
         state.loading = true;
@@ -150,7 +132,7 @@ const hotelSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to fetch hotel";
       })
-      
+
       // Create hotel
       .addCase(createHotel.pending, (state) => {
         state.loading = true;
@@ -164,7 +146,7 @@ const hotelSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to create hotel";
       })
-      
+
       // Update hotel
       .addCase(updateHotel.pending, (state) => {
         state.loading = true;
@@ -172,7 +154,7 @@ const hotelSlice = createSlice({
       })
       .addCase(updateHotel.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.hotels.findIndex(hotel => hotel.id === action.payload.id);
+        const index = state.hotels.findIndex((hotel: any) => hotel.id === action.payload.id);
         if (index !== -1) {
           state.hotels[index] = action.payload;
         }
@@ -184,7 +166,7 @@ const hotelSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to update hotel";
       })
-      
+
       // Delete hotel
       .addCase(deleteHotel.pending, (state) => {
         state.loading = true;
@@ -192,7 +174,7 @@ const hotelSlice = createSlice({
       })
       .addCase(deleteHotel.fulfilled, (state, action) => {
         state.loading = false;
-        state.hotels = state.hotels.filter(hotel => hotel.id !== action.payload);
+        state.hotels = state.hotels.filter((hotel: any) => hotel.id !== action.payload);
         if (state.currentHotel?.id === action.payload) {
           state.currentHotel = null;
         }

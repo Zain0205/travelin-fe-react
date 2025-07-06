@@ -1,16 +1,6 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../lib/axios";
 import type { CreateFlightRequest, FlightFilters, FlightPagination, FlightState, UpdateFlightRequest } from "@/types/flightTypes";
-import Cookies from "js-cookie";
-
-// Helper function to check if user is authenticated
-const checkAuthStatus = () => {
-  // You can adjust this based on how you store auth state
-  // This could check localStorage, Redux state, or make a quick API call
-  const token = Cookies.get("accessToken");
-  console.log(`tokennn ${token}`)
-  return !!token;
-};
 
 export const fetchFlights = createAsyncThunk(
   "flight/fetchFlights", 
@@ -27,13 +17,9 @@ export const fetchFlights = createAsyncThunk(
       if (filters.origin) queryParams.append("origin", filters.origin);
       if (filters.destination) queryParams.append("destination", filters.destination);
 
-      console.log("Query params:", queryParams.toString());
       const response = await api.get(`/flight?${queryParams.toString()}`);
-      console.log("Fetch flights response:", response.data);
       return response.data;
     } catch (error: any) {
-      console.error("Fetch flights error:", error);
-      console.error("Error response:", error.response?.data);
       return rejectWithValue(error.response?.data?.message || error.message || "Failed to fetch flights");
     }
   }
@@ -43,13 +29,9 @@ export const fetchFlightById = createAsyncThunk(
   "flight/fetchFlightById", 
   async (id: number, { rejectWithValue }) => {
     try {
-      console.log("Fetching flight by ID:", id);
       const response = await api.get(`/flight/${id}`);
-      console.log("Fetch flight by ID response:", response.data);
       return response.data;
     } catch (error: any) {
-      console.error("Fetch flight by ID error:", error);
-      console.error("Error response:", error.response?.data);
       return rejectWithValue(error.response?.data?.message || error.message || "Failed to fetch flight");
     }
   }
@@ -59,11 +41,6 @@ export const createFlight = createAsyncThunk(
   "flight/createFlight", 
   async (flightData: CreateFlightRequest, { rejectWithValue }) => {
     try {
-      // Check authentication before making the request
-      // if (!checkAuthStatus()) {
-      //   return rejectWithValue("Authentication required. Please log in.");
-      // }
-
       const formData = new FormData();
 
       formData.append("airlineName", flightData.airlineName);
@@ -85,11 +62,7 @@ export const createFlight = createAsyncThunk(
       
       return response.data;
     } catch (error: any) {
-      console.error("Create flight error:", error);
-      console.error("Error response:", error.response?.data);
-      console.error("Error status:", error.response?.status);
       
-      // Handle specific error cases
       if (error.response?.status === 401) {
         return rejectWithValue("Authentication failed. Please log in again.");
       }
@@ -107,29 +80,20 @@ export const updateFlight = createAsyncThunk(
   "flight/updateFlight", 
   async (updateData: UpdateFlightRequest, { rejectWithValue }) => {
     try {
-      // Check authentication before making the request
-      // if (!checkAuthStatus()) {
-      //   return rejectWithValue("Authentication required. Please log in.");
-      // }
 
-      console.log("Updating flight with data:", updateData);
       const { id, ...flightData } = updateData;
       const formData = new FormData();
 
       Object.entries(flightData).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
-          // Fixed typo: thumnail -> thumbnail
-          if (key === "thumbnail" && value instanceof File) {
-            formData.append("thumbnail", value);
-            console.log("Thumbnail file added for update:", value.name);
-          } else if (key !== "thumbnail") {
+          if (key === "thumnail" && value instanceof File) {
+            formData.append("thumnail", value);
+          } else if (key !== "thumnail") {
             formData.append(key, value.toString());
           }
         }
       });
 
-      // Log FormData contents
-      console.log("Update FormData contents:");
       for (let pair of formData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
       }
@@ -141,13 +105,8 @@ export const updateFlight = createAsyncThunk(
         },
       });
       
-      console.log("Update flight response:", response.data);
       return response.data;
     } catch (error: any) {
-      console.error("Update flight error:", error);
-      console.error("Error response:", error.response?.data);
-      
-      // Handle specific error cases
       if (error.response?.status === 401) {
         return rejectWithValue("Authentication failed. Please log in again.");
       }
@@ -165,20 +124,11 @@ export const deleteFlight = createAsyncThunk(
   "flight/deleteFlight", 
   async (id: number, { rejectWithValue }) => {
     try {
-      // Check authentication before making the request
-      // if (!checkAuthStatus()) {
-      //   return rejectWithValue("Authentication required. Please log in.");
-      // }
-
       await api.delete(`/flight/delete/${id}`, {
         withCredentials: true
       });
       return id;
     } catch (error: any) {
-      console.error("Delete flight error:", error);
-      console.error("Error response:", error.response?.data);
-      
-      // Handle specific error cases
       if (error.response?.status === 401) {
         return rejectWithValue("Authentication failed. Please log in again.");
       }
@@ -192,7 +142,6 @@ export const deleteFlight = createAsyncThunk(
   }
 );
 
-// Initial State
 const initialState: FlightState = {
   flights: [],
   currentFlight: null,
