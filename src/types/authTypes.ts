@@ -6,7 +6,7 @@ export interface User {
 }
 
 export interface AuthState {
-  user: User | null;
+  user: any | null; // Use 'any' to allow for partial user data
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;

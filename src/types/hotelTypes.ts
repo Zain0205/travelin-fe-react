@@ -17,7 +17,7 @@ export interface Hotel {
     name: string;
     email: string;
   };
-  images: {
+  hotelImages: {
     id: number;
     fileUrl: string;
     type: string;
@@ -30,7 +30,6 @@ export interface CreateHotelData {
   description: string;
   location: string;
   pricePerNight: number;
-  amenities: string[];
   thumbnail?: File;
   hotelImages?: File[];
 }

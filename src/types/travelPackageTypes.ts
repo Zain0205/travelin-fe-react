@@ -23,6 +23,7 @@ export interface TravelPackage {
     type: string;
     packageId: number;
   }>;
+  packageImages:[]
 }
 
 export interface CreateTravelPackageData {
