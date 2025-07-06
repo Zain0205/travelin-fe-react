@@ -15,6 +15,16 @@ import AgentHotel from "./pages/dashboard/agent/AgentHotel";
 import AddHotel from "./pages/dashboard/agent/AddHotel";
 import EditFlight from "./pages/dashboard/agent/EditFlight";
 import EditPackage from "./pages/dashboard/agent/EditPackage";
+import EditHotel from "./pages/dashboard/agent/EditHotel";
+import FlightListing from "./pages/flight/FlightListing";
+import FLightDetail from "./pages/flight/FLightDetail";
+import HotelListing from "./pages/hotel/HotelListing";
+import HotelDetail from "./pages/hotel/HotelDetail";
+import PackageListing from "./pages/package/PackageListing";
+import PackageDetail from "./pages/package/PackageDetail";
+import BookingForm from "./pages/bookings/BookingForm";
+import AgentBooking from "./pages/dashboard/agent/AgentBooking";
+import CustomerProfile from "./pages/profile/CustomerProfile";
 
 let router = createBrowserRouter([
   {
@@ -43,7 +53,7 @@ let router = createBrowserRouter([
           />
         ),
       },
-      { path: "/admin/dashboard", element: <AdminDashboard /> },
+      { path: "dashboard", element: <AdminDashboard /> },
     ],
   },
   {
@@ -59,7 +69,41 @@ let router = createBrowserRouter([
       { path: "flights/edit/:id", element: <EditFlight /> },
       { path: "hotels", element: <AgentHotel /> },
       { path: "hotels/add", element: <AddHotel /> },
+      { path: "hotels/edit/:id", element: <EditHotel /> },
+      { path: "bookings", element: <AgentBooking /> },
     ],
+  },
+  {
+    path: "/flight/listing",
+    element: <FlightListing />,
+  },
+  {
+    path: "/flight/detail/:id",
+    element: <FLightDetail />,
+  },
+  {
+    path: "/hotel/listing",
+    element: <HotelListing />,
+  },
+  {
+    path: "/hotel/detail/:id",
+    element: <HotelDetail />,
+  },
+  {
+    path: "/package/listing",
+    element: <PackageListing />,
+  },
+  {
+    path: "/package/detail/:id",
+    element: <PackageDetail />,
+  },
+  {
+    path: "/booking/:type/:id",
+    element: <BookingForm />,
+  },
+  {
+    path: "/profile",
+    element: <CustomerProfile />,
   },
 ]);
 
