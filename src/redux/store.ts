@@ -2,14 +2,16 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
 import flightReducer from "./slices/flightSlice";
 import travelPackageReducer from "./slices/travelPackageSlice";
-import hotelReducer from "./slices/hotelSlice"; // Add this import
+import hotelReducer from "./slices/hotelSlice";
+import bookingReducer from "./slices/bookingSlice"; // Add this import
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     flight: flightReducer,
     travelPackage: travelPackageReducer,
-    hotel: hotelReducer, // Add this line
+    hotel: hotelReducer,
+    booking: bookingReducer, // Add this line
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -20,8 +22,12 @@ export const store = configureStore({
           "flight.currentFlight.arrivalTime",
           "travelPackage.packages",
           "travelPackage.currentPackage",
-          "hotel.hotels", // Add hotel paths
+          "hotel.hotels",
           "hotel.currentHotel",
+          "booking.bookings", // Add booking paths
+          "booking.refunds",
+          "booking.currentBooking",
+          "booking.currentRefund",
         ],
       },
     }),
