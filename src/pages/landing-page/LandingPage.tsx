@@ -6,7 +6,7 @@ import TripList from "./TripList";
 function LandingPage() {
   return (
     <>
-      <Navbar />
+      <Navbar mode="landing" />
       <Hero />
       <TripList />
       <Footer />
