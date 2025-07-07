@@ -17,7 +17,7 @@ export function LoginForm({
 }: React.ComponentProps<"form">) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoading, error, isAuthenticated } = useAppSelector((state) => state.auth);
+  const { isLoading, error, isAuthenticated, user } = useAppSelector((state) => state.auth);
   
   const [formData, setFormData] = useState({
     email: '',
@@ -29,11 +29,28 @@ export function LoginForm({
     dispatch(clearError());
   }, [dispatch]);
 
+  // Navigate based on user role after successful authentication
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/agent/dashboard'); // Adjust route as needed
+    if (isAuthenticated && user) {
+      const role = user.role?.toLowerCase();
+      
+      switch (role) {
+        case 'admin':
+          navigate('/admin');
+          break;
+        case 'agent':
+          navigate('/agent');
+          break;
+        case 'customer':
+          navigate('/');
+          break;
+        default:
+          // Default fallback for unknown roles
+          navigate('/');
+          break;
+      }
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -57,10 +74,9 @@ export function LoginForm({
         remember: formData.remember,
       })).unwrap();
       
+      // Navigation will be handled by useEffect after successful login
     } catch (error) {
       console.error('Login failed:', error);
-      console.log("test")
-      console.log(error);
     }
   };
 
