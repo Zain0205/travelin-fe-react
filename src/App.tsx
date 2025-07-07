@@ -25,6 +25,7 @@ import PackageDetail from "./pages/package/PackageDetail";
 import BookingForm from "./pages/bookings/BookingForm";
 import AgentBooking from "./pages/dashboard/agent/AgentBooking";
 import CustomerProfile from "./pages/profile/CustomerProfile";
+import ChatPages from "./pages/chat/ChatPages";
 
 let router = createBrowserRouter([
   {
@@ -71,6 +72,7 @@ let router = createBrowserRouter([
       { path: "hotels/add", element: <AddHotel /> },
       { path: "hotels/edit/:id", element: <EditHotel /> },
       { path: "bookings", element: <AgentBooking /> },
+      { path: "chat/:receiverId", element: <ChatPages /> },
     ],
   },
   {
@@ -104,6 +106,10 @@ let router = createBrowserRouter([
   {
     path: "/profile",
     element: <CustomerProfile />,
+  },
+  {
+    path: "/chat/:receiverId",
+    element: <ChatPages />,
   },
 ]);
 
