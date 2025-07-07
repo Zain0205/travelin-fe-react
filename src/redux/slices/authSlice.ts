@@ -25,6 +25,7 @@ export const loginUser = createAsyncThunk(
       
       // Set cookie with proper options
       Cookies.set("accessToken", accessToken)
+      Cookies.set("role", user.role)
       
       console.log("Login successful:", user);
       console.log("JWT set as cookie");
