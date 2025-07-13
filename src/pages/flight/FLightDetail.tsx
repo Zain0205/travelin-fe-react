@@ -380,6 +380,7 @@ interface FlightBookingForm {
 const FlightBookingModal: React.FC<FlightBookingModalProps> = ({ currentFlight, trigger }) => {
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.booking);
+  const navigate = useNavigate()
 
   const [open, setOpen] = useState(false);
   const [travelDate, setTravelDate] = useState<Date>();
@@ -444,6 +445,7 @@ const FlightBookingModal: React.FC<FlightBookingModalProps> = ({ currentFlight, 
     try {
       await dispatch(createBooking(bookingData)).unwrap();
       toast.success("Booking berhasil dibuat!");
+      navigate("/profile")
       setOpen(false);
       // Reset form
       setTravelDate(undefined);

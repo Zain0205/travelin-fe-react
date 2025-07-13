@@ -235,7 +235,7 @@ export default function PackageListing() {
               placeholder="Search package title..."
               value={currentFilters.title}
               onChange={(e) => handleFilterChange("title", e.target.value)}
-              className="w-full border-slate-300"
+              className="w-full border-slate-300 dark:border-stone-600"
             />
 
             {/* Location Filter */}
@@ -243,7 +243,7 @@ export default function PackageListing() {
               value={currentFilters.location}
               onValueChange={(value) => handleFilterChange("location", value)}
             >
-              <SelectTrigger className="w-full border-slate-300">
+              <SelectTrigger className="w-full border-slate-300 dark:border-stone-600">
                 <SelectValue placeholder="Select destination" />
               </SelectTrigger>
               <SelectContent>
@@ -268,7 +268,7 @@ export default function PackageListing() {
                 }
               }}
             >
-              <SelectTrigger className="w-full border-slate-300">
+              <SelectTrigger className="w-full border-slate-300 dark:border-stone-600">
                 <SelectValue placeholder="Select price range" />
               </SelectTrigger>
               <SelectContent>
@@ -293,7 +293,7 @@ export default function PackageListing() {
                 }
               }}
             >
-              <SelectTrigger className="w-full border-slate-300">
+              <SelectTrigger className="w-full border-slate-300 dark:border-stone-600">
                 <SelectValue placeholder="Select duration" />
               </SelectTrigger>
               <SelectContent>

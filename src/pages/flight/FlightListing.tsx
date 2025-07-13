@@ -168,7 +168,7 @@ export default function FlightListing() {
               value={currentFilters.origin}
               onValueChange={(value) => handleFilterChange("origin", value)}
             >
-              <SelectTrigger className="w-full border-slate-300">
+              <SelectTrigger className="w-full border-slate-300 dark:border-stone-600">
                 <SelectValue placeholder="Select departure city" />
               </SelectTrigger>
               <SelectContent>
@@ -187,7 +187,7 @@ export default function FlightListing() {
               value={currentFilters.destination}
               onValueChange={(value) => handleFilterChange("destination", value)}
             >
-              <SelectTrigger className="w-full border-slate-300">
+              <SelectTrigger className="w-full border-slate-300 dark:border-stone-600">
                 <SelectValue placeholder="Select destination city" />
               </SelectTrigger>
               <SelectContent>
@@ -206,7 +206,7 @@ export default function FlightListing() {
               value={currentFilters.airlineName}
               onValueChange={(value) => handleFilterChange("airlineName", value)}
             >
-              <SelectTrigger className="w-full border-slate-300">
+              <SelectTrigger className="w-full border-slate-300 dark:border-stone-600">
                 <SelectValue placeholder="Select airline" />
               </SelectTrigger>
               <SelectContent>

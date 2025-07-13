@@ -517,6 +517,7 @@ const PackageBookingModal: React.FC<PackageBookingModalProps> = ({ currentPackag
   const [open, setOpen] = useState(false);
   const [participants, setParticipants] = useState<number>(1);
   const [specialRequests, setSpecialRequests] = useState<string>("");
+  const navigate = useNavigate();
 
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat("id-ID", {
@@ -570,6 +571,7 @@ const PackageBookingModal: React.FC<PackageBookingModalProps> = ({ currentPackag
       // Reset form
       setParticipants(1);
       setSpecialRequests("");
+      navigate("/profile")
     } catch (error) {
       toast.error((error as string) || "Gagal membuat booking");
     }

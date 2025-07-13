@@ -22,6 +22,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { useLocation } from "react-router-dom";
 
 const data = {
   user: {
@@ -32,7 +33,7 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "/",
+      url: "/admin/dashboard",
       icon: Home,
       isActive: true,
     },
@@ -61,115 +62,34 @@ const data = {
     },
     {
       title: "Agent Management",
-      url: "/agents",
+      url: "/admin/agents",
       icon: Users2,
-      items: [
-        {
-          title: "All Agents",
-          url: "/agents",
-        },
-        {
-          title: "Add New Agent",
-          url: "/agents/add",
-        },
-        {
-          title: "Performance Review",
-          url: "/agents/performance",
-        },
-        {
-          title: "Commission Reports",
-          url: "/agents/commission",
-        },
-      ],
     },
     {
       title: "Bookings",
       url: "/bookings",
       icon: Calendar,
-      badge: "12",
-      items: [
-        {
-          title: "All Bookings",
-          url: "/bookings",
-        },
-        {
-          title: "Pending",
-          url: "/bookings/pending",
-        },
-        {
-          title: "Confirmed",
-          url: "/bookings/confirmed",
-        },
-        {
-          title: "Cancelled",
-          url: "/bookings/cancelled",
-        },
-      ],
-    },
-    {
-      title: "Destinations",
-      url: "/destinations",
-      icon: MapPin,
-      items: [
-        {
-          title: "All Destinations",
-          url: "/destinations",
-        },
-        {
-          title: "Popular",
-          url: "/destinations/popular",
-        },
-        {
-          title: "Add New",
-          url: "/destinations/add",
-        },
-      ],
     },
     {
       title: "Packages",
       url: "/packages",
       icon: Plane,
-      items: [
-        {
-          title: "All Packages",
-          url: "/packages",
-        },
-        {
-          title: "Featured",
-          url: "/packages/featured",
-        },
-        {
-          title: "Seasonal",
-          url: "/packages/seasonal",
-        },
-      ],
     },
     {
       title: "Reviews",
       url: "/reviews",
       icon: Star,
-      badge: "5",
     },
     {
       title: "Messages",
       url: "/messages",
       icon: MessageSquare,
-      badge: "3",
-    },
-    {
-      title: "Payments",
-      url: "/payments",
-      icon: CreditCard,
-    },
-    {
-      title: "Settings",
-      url: "/settings",
-      icon: Settings,
     },
   ],
 };
 
 function AdminSidebar() {
+  const location = useLocation();
   return (
     <Sidebar>
       <SidebarHeader>
@@ -219,23 +139,63 @@ function AdminSidebar() {
             <SidebarGroupLabel>Main Navigation</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {data.navMain.map((item, index) => (
-                  <motion.div
-                    key={item.title}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                  >
-                    {item.items ? (
-                      <Collapsible
-                        defaultOpen={item.isActive}
-                        className="group/collapsible"
-                      >
+                {data.navMain.map((item, index) => {
+                  const isActive = location.pathname === item.url
+                  return (
+                    <motion.div
+                      key={item.title}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                    >
+                      {item.items ? (
+                        <Collapsible
+                          defaultOpen={item.isActive}
+                          className="group/collapsible"
+                        >
+                          <SidebarMenuItem>
+                            <CollapsibleTrigger asChild>
+                              <SidebarMenuButton
+                                isActive={isActive}
+                                className="group/menu-button"
+                              >
+                                <item.icon className="size-4" />
+                                <span>{item.title}</span>
+                                {item.badge && (
+                                  <Badge
+                                    variant="secondary"
+                                    className="ml-auto"
+                                  >
+                                    {item.badge}
+                                  </Badge>
+                                )}
+                                <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                              </SidebarMenuButton>
+                            </CollapsibleTrigger>
+                            <CollapsibleContent>
+                              <SidebarMenuSub>
+                                {item.items.map((subItem) => (
+                                  <SidebarMenuSubItem key={subItem.title}>
+                                    <SidebarMenuSubButton asChild>
+                                      <a href={subItem.url}>
+                                        <span>{subItem.title}</span>
+                                      </a>
+                                    </SidebarMenuSubButton>
+                                  </SidebarMenuSubItem>
+                                ))}
+                              </SidebarMenuSub>
+                            </CollapsibleContent>
+                          </SidebarMenuItem>
+                        </Collapsible>
+                      ) : (
                         <SidebarMenuItem>
-                          <CollapsibleTrigger asChild>
-                            <SidebarMenuButton
-                              isActive={item.isActive}
-                              className="group/menu-button"
+                          <SidebarMenuButton
+                            asChild
+                            isActive={isActive}
+                          >
+                            <a
+                              href={item.url}
+                              className="flex items-center"
                             >
                               <item.icon className="size-4" />
                               <span>{item.title}</span>
@@ -247,50 +207,13 @@ function AdminSidebar() {
                                   {item.badge}
                                 </Badge>
                               )}
-                              <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                            </SidebarMenuButton>
-                          </CollapsibleTrigger>
-                          <CollapsibleContent>
-                            <SidebarMenuSub>
-                              {item.items.map((subItem) => (
-                                <SidebarMenuSubItem key={subItem.title}>
-                                  <SidebarMenuSubButton asChild>
-                                    <a href={subItem.url}>
-                                      <span>{subItem.title}</span>
-                                    </a>
-                                  </SidebarMenuSubButton>
-                                </SidebarMenuSubItem>
-                              ))}
-                            </SidebarMenuSub>
-                          </CollapsibleContent>
+                            </a>
+                          </SidebarMenuButton>
                         </SidebarMenuItem>
-                      </Collapsible>
-                    ) : (
-                      <SidebarMenuItem>
-                        <SidebarMenuButton
-                          asChild
-                          isActive={item.isActive}
-                        >
-                          <a
-                            href={item.url}
-                            className="flex items-center"
-                          >
-                            <item.icon className="size-4" />
-                            <span>{item.title}</span>
-                            {item.badge && (
-                              <Badge
-                                variant="secondary"
-                                className="ml-auto"
-                              >
-                                {item.badge}
-                              </Badge>
-                            )}
-                          </a>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    )}
-                  </motion.div>
-                ))}
+                      )}
+                    </motion.div>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

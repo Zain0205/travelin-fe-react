@@ -30,7 +30,7 @@ export default function Hero() {
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="w-[90%] bg-white py-5 px-5 shadow-md absolute z-20 hidden md:block -bottom-32 lg:-bottom-40
-           rounded-lg"
+           rounded-lg dark:bg-neutral-900"
           >
             <Tabs
               defaultValue="flight"

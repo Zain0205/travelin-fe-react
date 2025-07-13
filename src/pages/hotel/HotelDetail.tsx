@@ -472,6 +472,7 @@ const HotelBookingModal: React.FC<HotelBookingModalProps> = ({ currentHotel, tri
   const [open, setOpen] = useState(false);
   const [checkInDate, setCheckInDate] = useState<Date>();
   const [checkOutDate, setCheckOutDate] = useState<Date>();
+  const navigate = useNavigate()
 
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat("id-ID", {
@@ -535,6 +536,7 @@ const HotelBookingModal: React.FC<HotelBookingModalProps> = ({ currentHotel, tri
       // Reset form
       setCheckInDate(undefined);
       setCheckOutDate(undefined);
+      navigate("/profile")
     } catch (error) {
       toast.error((error as string) || "Gagal membuat booking");
     }

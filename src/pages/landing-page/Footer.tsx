@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 
 function Footer() {
   return (
-    <footer className="bg-primary text-sm pb-14 pt-14 md:pt-40 lg:pt-64 font-montserrat text-black relative">
-      <div className="hidden lg:w-[78%] md:w-[70%] left-1/2 -translate-x-1/2 md:flex items-center absolute justify-between bg-emerald-200 px-8 z-20 rounded-2xl -top-24">
+    <footer className="bg-primary dark:bg-black dark:text-white text-sm pb-14 pt-14 md:pt-40 lg:pt-64 font-montserrat text-black relative">
+      <div className="hidden lg:w-[78%] md:w-[70%] left-1/2 -translate-x-1/2 md:flex items-center absolute justify-between bg-emerald-200 dark:bg-neutral-900 px-8 z-20 rounded-2xl -top-24">
         <div>
           <h1 className="lg:text-5xl md:text-xl font-semibold">Let's Get Started</h1>
           <p className="lg:text-lg w-2/3">Get Inspired Receive travel discounts, tips, and behind the scenes stories</p>

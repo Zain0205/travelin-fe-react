@@ -6,21 +6,19 @@ import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetT
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { logoutUser, checkAuthStatus } from "@/redux/slices/authSlice";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Cookies from "js-cookie";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "@/context/ThemeProvider";
 
 export default function Navbar({ mode }: any) {
   const headerRef = useRef<HTMLInputElement>(null);
   const [blur, setBlur] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  
+  const navigate = useNavigate();
+  const { setTheme } = useTheme();
+
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
   const accessToken = Cookies.get("accessToken");
   console.log("Access Token:", accessToken);
@@ -44,14 +42,14 @@ export default function Navbar({ mode }: any) {
 
   const handleLogout = () => {
     dispatch(logoutUser() as any);
-    navigate("/")
+    navigate("/");
   };
 
   const getUserInitials = (name: string) => {
     return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
+      .split(" ")
+      .map((word) => word[0])
+      .join("")
       .toUpperCase()
       .substring(0, 2);
   };
@@ -82,51 +80,73 @@ export default function Navbar({ mode }: any) {
             </div>
           </Link>
         </div>
-        
+
         <div className="flex lg:justify-center">
           <p className="font-semibold text-xl ">Travelin</p>
         </div>
-        
+
         {/* Desktop Navigation */}
         <div className="justify-end w-full gap-4 hidden lg:flex">
-          {(isAuthenticated || accessToken) ? (
+          {isAuthenticated || accessToken ? (
             // Logged in state
             <div className="flex items-center">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="p-2"
-                title="Favourites"
-              >
-                <Heart className="h-5 w-5" />
-              </Button>
-              
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-2 p-2">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={user?.avatar} alt={user?.name} />
-                      <AvatarFallback className="bg-primary text-white text-sm">
-                        {user?.name ? getUserInitials(user.name) : 'U'}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="text-sm font-medium">{user?.name || 'Loading...'}</span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                  >
+                    <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+                    <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+                    <span className="sr-only">Toggle theme</span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="flex items-center gap-2 p-2"
+                  >
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage
+                        src={user?.avatar}
+                        alt={user?.name}
+                      />
+                      <AvatarFallback className="bg-primary text-white text-sm">{user?.name ? getUserInitials(user.name) : "U"}</AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm font-medium">{user?.name || "Loading..."}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-48"
+                >
                   <DropdownMenuItem asChild>
-                    <Link to={`/profile`} className="flex items-center gap-2">
+                    <Link
+                      to={`/profile`}
+                      className="flex items-center gap-2"
+                    >
                       <User className="h-4 w-4" />
                       Profile
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/favourites" className="flex items-center gap-2">
+                    <Link
+                      to="/favourites"
+                      className="flex items-center gap-2"
+                    >
                       <Heart className="h-4 w-4" />
                       Favourites
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem 
+                  <DropdownMenuItem
                     onClick={handleLogout}
                     className="flex items-center gap-2 text-red-600"
                   >
@@ -152,7 +172,7 @@ export default function Navbar({ mode }: any) {
             </>
           )}
         </div>
-        
+
         {/* Mobile Navigation */}
         <div className="lg:hidden">
           <Sheet>
@@ -164,7 +184,7 @@ export default function Navbar({ mode }: any) {
                 <SheetTitle className="text-primary">Travelin</SheetTitle>
                 <SheetDescription>Find flight and place to stay with travelin</SheetDescription>
               </SheetHeader>
-              
+
               <div className="gap-4 flex flex-col">
                 <Link
                   className="px-4 py-2 hover:bg-primary hover:text-white"
@@ -193,7 +213,7 @@ export default function Navbar({ mode }: any) {
                     <span>Find Travel</span>
                   </div>
                 </Link>
-                
+
                 {(isAuthenticated || accessToken) && (
                   <>
                     <Link
@@ -217,21 +237,22 @@ export default function Navbar({ mode }: any) {
                   </>
                 )}
               </div>
-              
+
               <SheetFooter>
-                {(isAuthenticated || accessToken) ? (
+                {isAuthenticated || accessToken ? (
                   <div className="flex flex-col gap-2 w-full">
                     <div className="flex items-center gap-2 p-2">
                       <Avatar className="h-8 w-8">
-                        <AvatarImage src={user?.avatar} alt={user?.name} />
-                        <AvatarFallback className="bg-primary text-white text-sm">
-                          {user?.name ? getUserInitials(user.name) : 'U'}
-                        </AvatarFallback>
+                        <AvatarImage
+                          src={user?.avatar}
+                          alt={user?.name}
+                        />
+                        <AvatarFallback className="bg-primary text-white text-sm">{user?.name ? getUserInitials(user.name) : "U"}</AvatarFallback>
                       </Avatar>
-                      <span className="text-sm font-medium">{user?.name || 'Loading...'}</span>
+                      <span className="text-sm font-medium">{user?.name || "Loading..."}</span>
                     </div>
-                    <Button 
-                      variant="outline" 
+                    <Button
+                      variant="outline"
                       onClick={handleLogout}
                       className="w-full"
                     >
@@ -241,7 +262,10 @@ export default function Navbar({ mode }: any) {
                   </div>
                 ) : (
                   <>
-                    <Button variant="outline" asChild>
+                    <Button
+                      variant="outline"
+                      asChild
+                    >
                       <Link to="/login">Sign in</Link>
                     </Button>
                     <Button asChild>

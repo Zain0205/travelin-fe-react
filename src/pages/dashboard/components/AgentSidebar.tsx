@@ -24,13 +24,11 @@ const data = {
       title: "Travel Packages",
       url: "/agent/packages",
       icon: Package,
-      badge: "5",
     },
     {
       title: "Flights",
       url: "/agent/flights",
       icon: Plane,
-      badge: "3",
     },
     {
       title: "Hotels",
@@ -49,7 +47,7 @@ const data = {
     },
     {
       title: "Customer Chat",
-      url: "/agent/chats",
+      url: "/agent/chat/inbox",
       icon: MessageSquare,
     },
   ],

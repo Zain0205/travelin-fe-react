@@ -57,7 +57,7 @@ export default function TripList() {
 
 function TripListCard() {
   return (
-    <div className="bg-white p-4 shadow-lg rounded-lg flex w-full md:w-[47.5%] lg:w-[31.3%] items-center gap-x-5">
+    <div className="bg-white p-4 shadow-lg rounded-lg flex w-full md:w-[47.5%] lg:w-[31.3%] items-center gap-x-5 dark:bg-neutral-900">
       <div className="h-20 w-20 rounded-md overflow-hidden">
         <img
           className="h-full w-full"

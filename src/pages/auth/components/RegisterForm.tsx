@@ -1,4 +1,3 @@
-// src/components/RegisterForm.tsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from "@/lib/utils";
@@ -29,12 +28,10 @@ export function RegisterForm({
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Clear error when component mounts
   useEffect(() => {
     dispatch(clearError());
   }, [dispatch]);
 
-  // Handle successful registration
   useEffect(() => {
     if (isAuthenticated && showSuccess) {
       const timer = setTimeout(() => {
@@ -78,7 +75,6 @@ export function RegisterForm({
       [name]: value
     }));
     
-    // Clear validation error for this field
     if (validationErrors[name]) {
       setValidationErrors(prev => ({
         ...prev,
