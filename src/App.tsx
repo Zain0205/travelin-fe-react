@@ -26,6 +26,8 @@ import BookingForm from "./pages/bookings/BookingForm";
 import AgentBooking from "./pages/dashboard/agent/AgentBooking";
 import CustomerProfile from "./pages/profile/CustomerProfile";
 import ChatPages from "./pages/chat/ChatPages";
+import AgentManagement from "./pages/dashboard/admin/AgentManagement";
+import PaymentSuccess from "./pages/bookings/PaymentSuccess";
 
 let router = createBrowserRouter([
   {
@@ -55,12 +57,22 @@ let router = createBrowserRouter([
         ),
       },
       { path: "dashboard", element: <AdminDashboard /> },
+      { path: "agents", element: <AgentManagement /> },
     ],
   },
   {
     path: "/agent",
     element: <LayoutWrapper sidebar={<AgentSidebar />} />,
     children: [
+      {
+        index: true,
+        element: (
+          <Navigate
+            to="/agent/dashboard"
+            replace
+          />
+        ),
+      },
       { path: "dashboard", element: <AgentDashboard /> },
       { path: "packages", element: <AgentTravelPackage /> },
       { path: "packages/add", element: <AddPackage /> },
@@ -110,6 +122,10 @@ let router = createBrowserRouter([
   {
     path: "/chat/:receiverId",
     element: <ChatPages />,
+  },
+  {
+    path: "/payment/callback",
+    element: <PaymentSuccess />,
   },
 ]);
 
