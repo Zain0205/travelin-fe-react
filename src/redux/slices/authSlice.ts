@@ -1,5 +1,5 @@
-// store/authSlice.ts - Updated with better cookie management
-import type { AuthState, LoginCredentials, RegisterCredentials, User } from "@/types/authTypes";
+// store/authSlice.ts - Updated with better cookie management and get all agents
+import type { AuthState, LoginCredentials, RegisterCredentials } from "@/types/authTypes";
 import api from "../../lib/axios";
 import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
@@ -26,6 +26,7 @@ export const loginUser = createAsyncThunk(
       // Set cookie with proper options
       Cookies.set("accessToken", accessToken)
       Cookies.set("role", user.role)
+      Cookies.set("userId", user.id)
       
       console.log("Login successful:", user);
       console.log("JWT set as cookie");
@@ -73,11 +74,26 @@ export const checkAuthStatus = createAsyncThunk(
   }
 );
 
+export const getAllAgents = createAsyncThunk(
+  "auth/getAllAgents", 
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/user/agents");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to fetch agents");
+    }
+  }
+);
+
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
   isLoading: false,
   error: null,
+  agents: [], // Add agents array to store all agents
+  agentsLoading: false, // Separate loading state for agents
+  agentsError: null, // Separate error state for agents
 };
 
 const authSlice = createSlice({
@@ -87,7 +103,10 @@ const authSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
-    setUser: (state, action: PayloadAction<User>) => {
+    clearAgentsError: (state) => {
+      state.agentsError = null;
+    },
+    setUser: (state, action: PayloadAction<any>) => {
       state.user = action.payload;
       state.isAuthenticated = true;
     },
@@ -174,9 +193,23 @@ const authSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
         state.error = null; // Don't show error for auth check failure
+      })
+      // Get All Agents
+      .addCase(getAllAgents.pending, (state) => {
+        state.agentsLoading = true;
+        state.agentsError = null;
+      })
+      .addCase(getAllAgents.fulfilled, (state, action) => {
+        state.agentsLoading = false;
+        state.agents = action.payload;
+        state.agentsError = null;
+      })
+      .addCase(getAllAgents.rejected, (state, action) => {
+        state.agentsLoading = false;
+        state.agentsError = action.payload as string;
       });
   },
 });
 
-export const { clearError, setUser, clearAuth, syncAuthWithCookie } = authSlice.actions;
+export const { clearError, clearAgentsError, setUser, clearAuth, syncAuthWithCookie } = authSlice.actions;
 export default authSlice.reducer;

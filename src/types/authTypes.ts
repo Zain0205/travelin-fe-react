@@ -3,13 +3,17 @@ export interface User {
   name: string;
   email: string;
   role: string;
+  phone?: string
 }
 
 export interface AuthState {
-  user: any | null; // Use 'any' to allow for partial user data
+  user: any | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  agents: any; // Array of users with agent role
+  agentsLoading: boolean; // Loading state for agents
+  agentsError: string | null; // Error state for agents
 }
 
 export interface LoginCredentials {
@@ -23,4 +27,5 @@ export interface RegisterCredentials {
   email: string;
   password: string;
   role: string;
+  phone?: string;
 }

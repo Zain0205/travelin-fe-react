@@ -5,7 +5,8 @@ import travelPackageReducer from "./slices/travelPackageSlice";
 import hotelReducer from "./slices/hotelSlice";
 import bookingReducer from "./slices/bookingSlice";
 import paymentReducer from "./slices/paymentSlice";
-import chatReducer from "./slices/chatSlice"; // Add this import
+import chatReducer from "./slices/chatSlice";
+import dashboardReducer from "./slices/dashboardSlice"; // Add this import
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
     hotel: hotelReducer,
     booking: bookingReducer,
     payment: paymentReducer,
-    chat: chatReducer, // Add this line
+    chat: chatReducer,
+    dashboard: dashboardReducer, // Add this line
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -36,9 +38,15 @@ export const store = configureStore({
           "payment.currentPayment",
           "payment.paymentHistory",
           "payment.midtransResponse",
-          "chat.messages", // Add chat paths
+          "chat.messages",
           "chat.chatList",
           "chat.currentChatHistory",
+          "dashboard.agentStatistics", // Add dashboard paths
+          "dashboard.adminStatistics",
+          "dashboard.agentMonthlyReport",
+          "dashboard.adminMonthlyReport",
+          "dashboard.agentPackages",
+          "dashboard.agentPerformances",
         ],
       },
     }),
