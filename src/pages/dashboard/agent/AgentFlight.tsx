@@ -171,7 +171,7 @@ function AgentFlight() {
                         <div className="flex items-center space-x-3">
                           {flight.thumnail && (
                             <img
-                              src={`http://localhost:3000/${flight.thumnail}`}
+                              src={`https://travelin.noxturne.my.id/${flight.thumnail}`}
                               alt={flight.airlineName}
                               className="w-10 h-10 rounded object-cover"
                               onError={(e) => {
