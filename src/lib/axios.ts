@@ -2,7 +2,7 @@ import axios from "axios";
 import type { AxiosInstance, AxiosResponse } from "axios";
 
 const api: AxiosInstance = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "https://travelin.noxturne.my.id/api",
   timeout: 10000,
   withCredentials: true, // Essential for httpOnly cookies
   headers: {
