@@ -2,21 +2,18 @@
 
 import React, { useEffect } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Users, MapPin, Plane, TrendingUp, DollarSign, ArrowUpRight, ArrowDownRight, Package, Hotel, Clock } from "lucide-react";
-
-// Redux hooks (you'll need to implement these)
+import { Calendar, Users, MapPin, Plane, TrendingUp, DollarSign, ArrowUpRight, ArrowDownRight, Package, Hotel, Clock, UserCheck } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { 
-  fetchAgentStatistics, 
-  fetchAgentMonthlyReport, 
-  fetchAgentPackages 
+  fetchAdminStatistics, 
+  fetchAdminMonthlyReport, 
+  fetchAgentPerformances 
 } from "@/redux/slices/dashboardSlice";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-// Currency formatter for Indonesian Rupiah
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
@@ -26,7 +23,6 @@ const formatCurrency = (amount: number) => {
   }).format(amount);
 };
 
-// Date formatter
 const formatDate = (dateString: string) => {
   return new Intl.DateTimeFormat('id-ID', {
     year: 'numeric',
@@ -56,74 +52,108 @@ const itemVariants = {
   },
 };
 
-function AgentDashboard() {
+function AdminDashboard() {
   const dispatch = useAppDispatch();
   
-  // Redux state selectors
+  // Redux state selectors untuk admin
   const {
-    agentStatistics,
-    agentMonthlyReport,
-    agentPackages,
-    isLoadingAgentStats,
-    isLoadingAgentReport,
-    isLoadingAgentPackages,
-    agentStatsError,
-    agentReportError,
-    agentPackagesError
+    adminStatistics,
+    adminMonthlyReport,
+    agentPerformances,
+    isLoadingAdminStats,
+    isLoadingAdminReport,
+    isLoadingAgentPerformances,
+    adminStatsError,
+    adminReportError,
+    agentPerformancesError
   } = useAppSelector((state) => state.dashboard);
 
-  // Fetch data on component mount
   useEffect(() => {
-    dispatch(fetchAgentStatistics());
-    dispatch(fetchAgentMonthlyReport({ year: new Date().getFullYear() }));
-    dispatch(fetchAgentPackages());
+    dispatch(fetchAdminStatistics());
+    dispatch(fetchAdminMonthlyReport({ year: new Date().getFullYear() }));
+    dispatch(fetchAgentPerformances());
   }, [dispatch]);
 
-  // Generate stats data from Redux state
-  const statsData = agentStatistics ? [
+  const statsData = adminStatistics ? [
     {
-      title: "Total Packages",
-      value: agentStatistics.totalPackages.toLocaleString('id-ID'),
-      change: "+12.5%", // You can calculate this from monthly report
+      title: "Total Users",
+      value: adminStatistics.totalUsers.toLocaleString('id-ID'),
+      change: "+15.2%",
       trend: "up",
-      icon: Package,
+      icon: Users,
       color: "text-blue-600",
-      isLoading: isLoadingAgentStats
+      isLoading: isLoadingAdminStats
     },
     {
-      title: "Revenue",
-      value: formatCurrency(agentStatistics.totalRevenue),
-      change: "+8.2%",
+      title: "Total Revenue",
+      value: formatCurrency(adminStatistics.totalRevenue),
+      change: "+12.8%",
       trend: "up",
       icon: DollarSign,
       color: "text-green-600",
-      isLoading: isLoadingAgentStats
+      isLoading: isLoadingAdminStats
     },
     {
       title: "Total Bookings",
-      value: agentStatistics.totalBookings.toLocaleString('id-ID'),
-      change: "+5.7%",
+      value: adminStatistics.totalBookings.toLocaleString('id-ID'),
+      change: "+8.7%",
       trend: "up",
       icon: Calendar,
       color: "text-purple-600",
-      isLoading: isLoadingAgentStats
+      isLoading: isLoadingAdminStats
     },
     {
-      title: "Active Packages",
-      value: agentStatistics.activePackages.toLocaleString('id-ID'),
-      change: "+2.1%",
+      title: "Total Agents",
+      value: adminStatistics.totalAgents.toLocaleString('id-ID'),
+      change: "+5.3%",
       trend: "up",
-      icon: MapPin,
+      icon: UserCheck,
       color: "text-orange-600",
-      isLoading: isLoadingAgentStats
+      isLoading: isLoadingAdminStats
+    },
+    {
+      title: "Total Packages",
+      value: adminStatistics.totalPackages.toLocaleString('id-ID'),
+      change: "+7.1%",
+      trend: "up",
+      icon: Package,
+      color: "text-indigo-600",
+      isLoading: isLoadingAdminStats
+    },
+    {
+      title: "Total Hotels",
+      value: adminStatistics.totalHotels.toLocaleString('id-ID'),
+      change: "+3.2%",
+      trend: "up",
+      icon: Hotel,
+      color: "text-pink-600",
+      isLoading: isLoadingAdminStats
+    },
+    {
+      title: "Total Flights",
+      value: adminStatistics.totalFlights.toLocaleString('id-ID'),
+      change: "+4.5%",
+      trend: "up",
+      icon: Plane,
+      color: "text-cyan-600",
+      isLoading: isLoadingAdminStats
+    },
+    {
+      title: "Pending Bookings",
+      value: adminStatistics.pendingBookings.toLocaleString('id-ID'),
+      change: "-2.1%",
+      trend: "down",
+      icon: Clock,
+      color: "text-yellow-600",
+      isLoading: isLoadingAdminStats
     },
   ] : [];
 
-  // Get top performing packages
-  const topPackages = agentPackages?.slice(0, 5) || [];
+  // Get top performing agents
+  const topAgents = agentPerformances?.slice(0, 5) || [];
 
   // Calculate monthly growth for recent months
-  const recentMonthlyData = agentMonthlyReport?.slice(-3) || [];
+  const recentMonthlyData = adminMonthlyReport?.slice(-3) || [];
 
   return (
     <motion.div
@@ -138,28 +168,28 @@ function AgentDashboard() {
         className="flex items-center justify-between"
       >
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Agent Dashboard</h2>
+          <h2 className="text-3xl font-bold tracking-tight">Admin Dashboard</h2>
           <p className="text-muted-foreground">
-            Welcome back! Here's your travel agency performance overview.
+            Welcome back! Here's your platform overview and performance metrics.
           </p>
         </div>
         <div className="flex items-center space-x-2">
           <Button>
-            <Package className="mr-2 h-4 w-4" />
-            New Package
+            <Users className="mr-2 h-4 w-4" />
+            Manage Users
           </Button>
         </div>
       </motion.div>
 
       {/* Error Messages */}
-      {(agentStatsError || agentReportError || agentPackagesError) && (
+      {(adminStatsError || adminReportError || agentPerformancesError) && (
         <motion.div variants={itemVariants}>
           <Card className="border-red-200 bg-red-50">
             <CardContent className="pt-6">
               <div className="text-sm text-red-600">
-                {agentStatsError && <p>Stats Error: {agentStatsError}</p>}
-                {agentReportError && <p>Report Error: {agentReportError}</p>}
-                {agentPackagesError && <p>Packages Error: {agentPackagesError}</p>}
+                {adminStatsError && <p>Stats Error: {adminStatsError}</p>}
+                {adminReportError && <p>Report Error: {adminReportError}</p>}
+                {agentPerformancesError && <p>Agent Performances Error: {agentPerformancesError}</p>}
               </div>
             </CardContent>
           </Card>
@@ -219,10 +249,10 @@ function AgentDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Monthly Performance</CardTitle>
-              <CardDescription>Your recent monthly performance overview</CardDescription>
+              <CardDescription>Platform monthly performance overview</CardDescription>
             </CardHeader>
             <CardContent>
-              {isLoadingAgentReport ? (
+              {isLoadingAdminReport ? (
                 <div className="space-y-4">
                   {[1, 2, 3].map((i) => (
                     <div key={i} className="flex items-center space-x-4">
@@ -258,7 +288,11 @@ function AgentDashboard() {
                         </div>
                         <div className="flex items-center justify-between text-sm text-muted-foreground">
                           <span>Revenue: {formatCurrency(report.totalRevenue)}</span>
-                          <span>Packages: {report.packageBookings}</span>
+                          <div className="flex space-x-4">
+                            <span>Packages: {report.packageBookings}</span>
+                            <span>Hotels: {report.hotelBookings}</span>
+                            <span>Flights: {report.flightBookings}</span>
+                          </div>
                         </div>
                       </div>
                     </motion.div>
@@ -274,18 +308,18 @@ function AgentDashboard() {
           </Card>
         </motion.div>
 
-        {/* Top Packages */}
+        {/* Top Performing Agents */}
         <motion.div
           variants={itemVariants}
           className="col-span-3"
         >
           <Card>
             <CardHeader>
-              <CardTitle>Top Packages</CardTitle>
-              <CardDescription>Your best performing travel packages</CardDescription>
+              <CardTitle>Top Performing Agents</CardTitle>
+              <CardDescription>Best performing travel agents on the platform</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {isLoadingAgentPackages ? (
+              {isLoadingAgentPerformances ? (
                 <div className="space-y-4">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <div key={i} className="flex items-center space-x-4">
@@ -297,10 +331,10 @@ function AgentDashboard() {
                     </div>
                   ))}
                 </div>
-              ) : topPackages.length > 0 ? (
-                topPackages.map((pkg, index) => (
+              ) : topAgents.length > 0 ? (
+                topAgents.map((agent, index) => (
                   <motion.div
-                    key={pkg.id}
+                    key={agent.agentId}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -309,25 +343,25 @@ function AgentDashboard() {
                     <div className="flex-1 space-y-1">
                       <div className="flex items-center justify-between">
                         <p className="text-sm font-medium leading-none line-clamp-1">
-                          {pkg.title}
+                          {agent.agentName}
                         </p>
                         <Badge
                           variant="outline"
                           className="text-xs rounded-full bg-primary text-white"
                         >
-                          ★ {pkg.averageRating?.toFixed(1) || 'N/A'}
+                          ★ {agent.averageRating?.toFixed(1) || 'N/A'}
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{pkg.location}</span>
-                        <span>{pkg.totalBookings} bookings</span>
+                        <span>{agent.totalPackages} packages</span>
+                        <span>{agent.totalBookings} bookings</span>
                       </div>
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-medium text-green-600">
-                          {formatCurrency(pkg.totalRevenue)}
+                          {formatCurrency(agent.totalRevenue)}
                         </span>
                         <span className="text-muted-foreground">
-                          {pkg.totalReviews} reviews
+                          {agent.totalReviews} reviews
                         </span>
                       </div>
                     </div>
@@ -335,8 +369,8 @@ function AgentDashboard() {
                 ))
               ) : (
                 <div className="text-center py-8 text-muted-foreground">
-                  <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No packages available</p>
+                  <UserCheck className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p>No agent performances available</p>
                 </div>
               )}
             </CardContent>
@@ -349,7 +383,7 @@ function AgentDashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Frequently used actions for managing your travel packages</CardDescription>
+            <CardDescription>Frequently used admin actions for platform management</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -361,8 +395,20 @@ function AgentDashboard() {
                   variant="outline"
                   className="w-full h-20 flex-col space-y-2 bg-transparent"
                 >
-                  <Package className="h-6 w-6" />
-                  <span>Manage Packages</span>
+                  <Users className="h-6 w-6" />
+                  <span>Manage Users</span>
+                </Button>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button
+                  variant="outline"
+                  className="w-full h-20 flex-col space-y-2 bg-transparent"
+                >
+                  <UserCheck className="h-6 w-6" />
+                  <span>Manage Agents</span>
                 </Button>
               </motion.div>
               <motion.div
@@ -374,19 +420,7 @@ function AgentDashboard() {
                   className="w-full h-20 flex-col space-y-2 bg-transparent"
                 >
                   <Calendar className="h-6 w-6" />
-                  <span>View Bookings</span>
-                </Button>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Button
-                  variant="outline"
-                  className="w-full h-20 flex-col space-y-2 bg-transparent"
-                >
-                  <Hotel className="h-6 w-6" />
-                  <span>Hotel Bookings</span>
+                  <span>All Bookings</span>
                 </Button>
               </motion.div>
               <motion.div
@@ -398,7 +432,7 @@ function AgentDashboard() {
                   className="w-full h-20 flex-col space-y-2 bg-transparent"
                 >
                   <TrendingUp className="h-6 w-6" />
-                  <span>Performance</span>
+                  <span>Analytics</span>
                 </Button>
               </motion.div>
             </div>
@@ -409,4 +443,4 @@ function AgentDashboard() {
   );
 }
 
-export default AgentDashboard;
+export default AdminDashboard;

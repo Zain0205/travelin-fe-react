@@ -28,6 +28,9 @@ import CustomerProfile from "./pages/profile/CustomerProfile";
 import ChatPages from "./pages/chat/ChatPages";
 import AgentManagement from "./pages/dashboard/admin/AgentManagement";
 import PaymentSuccess from "./pages/bookings/PaymentSuccess";
+import { VerifiedIcon } from "lucide-react";
+import Verification from "./pages/auth/Verification";
+import AdminAnalytics from "./pages/dashboard/admin/AdminAnalytics";
 
 let router = createBrowserRouter([
   {
@@ -58,6 +61,17 @@ let router = createBrowserRouter([
       },
       { path: "dashboard", element: <AdminDashboard /> },
       { path: "agents", element: <AgentManagement /> },
+      { path: "bookings", element: <AgentBooking /> },
+      { path: "packages", element: <AgentTravelPackage /> },
+      { path: "packages/add", element: <AddPackage /> },
+      { path: "packages/edit/:id", element: <EditPackage /> },
+      { path: "flights", element: <AgentFlight /> },
+      { path: "flights/add", element: <AddFlight /> },
+      { path: "flights/edit/:id", element: <EditFlight /> },
+      { path: "hotels", element: <AgentHotel /> },
+      { path: "hotels/add", element: <AddHotel /> },
+      { path: "hotels/edit/:id", element: <EditHotel /> },
+      { path: "analytics", element: <AdminAnalytics /> },
     ],
   },
   {
@@ -126,6 +140,10 @@ let router = createBrowserRouter([
   {
     path: "/payment/callback",
     element: <PaymentSuccess />,
+  },
+  {
+    path: "/verification/:token",
+    element: <Verification />,
   },
 ]);
 

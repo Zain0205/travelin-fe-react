@@ -1,8 +1,7 @@
 import { GalleryVerticalEndIcon } from "lucide-react";
-import RegisterForm from "./components/RegisterForm";
-import login from "@/assets/images/login.jpg";
+import VerificationForm from "./components/VerificationForm";
 
-function Register() {
+export default function Verification() {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
@@ -16,19 +15,18 @@ function Register() {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full md:max-w-1/2">
-            <RegisterForm />
+            <VerificationForm />
           </div>
         </div>
       </div>
       <div className="bg-muted relative hidden lg:block">
         <img
-          src={login}
+          src="/placeholder.svg"
           alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2]"
+          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
       </div>
     </div>
   )
 }
 
-export default Register;

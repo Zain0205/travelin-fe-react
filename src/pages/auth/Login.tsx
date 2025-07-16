@@ -1,5 +1,6 @@
 import { GalleryVerticalEnd } from "lucide-react"
 import { LoginForm } from "./components/LoginForm"
+import login from "@/assets/images/login.jpg"
 
 function Login() {
   return (
@@ -21,9 +22,9 @@ function Login() {
       </div>
       <div className="bg-muted relative hidden lg:block">
         <img
-          src=""
+          src={login}
           alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] "
         />
       </div>
     </div>)

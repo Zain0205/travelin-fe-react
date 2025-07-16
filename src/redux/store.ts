@@ -6,7 +6,8 @@ import hotelReducer from "./slices/hotelSlice";
 import bookingReducer from "./slices/bookingSlice";
 import paymentReducer from "./slices/paymentSlice";
 import chatReducer from "./slices/chatSlice";
-import dashboardReducer from "./slices/dashboardSlice"; // Add this import
+import dashboardReducer from "./slices/dashboardSlice";
+import reviewsTestimonialsReducer from "./slices/reviewsTestimonialsSlice"; // Add this import
 
 export const store = configureStore({
   reducer: {
@@ -17,7 +18,8 @@ export const store = configureStore({
     booking: bookingReducer,
     payment: paymentReducer,
     chat: chatReducer,
-    dashboard: dashboardReducer, // Add this line
+    dashboard: dashboardReducer,
+    reviewsTestimonials: reviewsTestimonialsReducer, // Add this line
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -41,12 +43,17 @@ export const store = configureStore({
           "chat.messages",
           "chat.chatList",
           "chat.currentChatHistory",
-          "dashboard.agentStatistics", // Add dashboard paths
+          "dashboard.agentStatistics",
           "dashboard.adminStatistics",
           "dashboard.agentMonthlyReport",
           "dashboard.adminMonthlyReport",
           "dashboard.agentPackages",
           "dashboard.agentPerformances",
+          "reviewsTestimonials.reviews", // Add reviewsTestimonials paths
+          "reviewsTestimonials.userReviews",
+          "reviewsTestimonials.currentReviewList",
+          "reviewsTestimonials.testimonials",
+          "reviewsTestimonials.userTestimonials",
         ],
       },
     }),

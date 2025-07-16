@@ -40,11 +40,11 @@ const data = {
       url: "/agent/bookings",
       icon: Calendar,
     },
-    {
-      title: "Reviews",
-      url: "/agent/reviews",
-      icon: Star,
-    },
+    // {
+    //   title: "Reviews",
+    //   url: "/agent/reviews",
+    //   icon: Star,
+    // },
     {
       title: "Customer Chat",
       url: "/agent/chat/inbox",

@@ -43,11 +43,9 @@ export const logoutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await api.post("/user/logout");
-      // Remove cookie
       Cookies.remove("accessToken");
       return true;
     } catch (error: any) {
-      // Even if server request fails, remove cookie
       Cookies.remove("accessToken");
       return rejectWithValue(error.response?.data?.message || "Logout failed");
     }
@@ -63,11 +61,9 @@ export const checkAuthStatus = createAsyncThunk(
         return rejectWithValue("No token found");
       }
       
-      // Check if user is authenticated by calling protected endpoint
       const response = await api.get("/user/profile");
       return response.data;
     } catch (error: any) {
-      // If token is invalid, remove it
       Cookies.remove("accessToken");
       return rejectWithValue("Not authenticated");
     }

@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { BarChart3, Calendar, CreditCard, Globe, Home, MapPin, MessageSquare, Plane, Settings, Star, Wallet, ChevronDown, Users2 } from "lucide-react";
+import { BarChart3, Calendar, CreditCard, Globe, Home, MapPin, MessageSquare, Plane, Settings, Star, Wallet, ChevronDown, Users2, Package, Hotel } from "lucide-react";
 
 import {
   Sidebar,
@@ -39,26 +39,8 @@ const data = {
     },
     {
       title: "Analytics",
-      url: "/analytics",
+      url: "/admin/analytics",
       icon: BarChart3,
-      items: [
-        {
-          title: "Overview",
-          url: "/analytics",
-        },
-        {
-          title: "Revenue Analytics",
-          url: "/analytics/revenue",
-        },
-        {
-          title: "Performance Reports",
-          url: "/analytics/performance",
-        },
-        {
-          title: "Customer Insights",
-          url: "/analytics/insights",
-        },
-      ],
     },
     {
       title: "Agent Management",
@@ -66,25 +48,30 @@ const data = {
       icon: Users2,
     },
     {
-      title: "Bookings",
-      url: "/bookings",
-      icon: Calendar,
+      title: "Travel Packages",
+      url: "/admin/packages",
+      icon: Package,
     },
     {
-      title: "Packages",
-      url: "/packages",
+      title: "Flights",
+      url: "/admin/flights",
       icon: Plane,
     },
     {
-      title: "Reviews",
-      url: "/reviews",
-      icon: Star,
+      title: "Hotels",
+      url: "/admin/hotels",
+      icon: Hotel,
     },
     {
-      title: "Messages",
-      url: "/messages",
-      icon: MessageSquare,
+      title: "Bookings",
+      url: "/admin/bookings",
+      icon: Calendar,
     },
+    // {
+    //   title: "Reviews",
+    //   url: "/reviews",
+    //   icon: Star,
+    // },
   ],
 };
 
@@ -254,18 +241,6 @@ function AdminSidebar() {
                   align="end"
                   sideOffset={4}
                 >
-                  <DropdownMenuItem>
-                    <Settings className="mr-2 h-4 w-4" />
-                    Account Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Wallet className="mr-2 h-4 w-4" />
-                    Billing
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <MessageSquare className="mr-2 h-4 w-4" />
-                    Support
-                  </DropdownMenuItem>
                   <DropdownMenuItem>Log out</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

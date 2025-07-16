@@ -45,6 +45,8 @@ import Navbar from "../landing-page/Navbar";
 import Footer from "../landing-page/Footer";
 import { useNavigate } from "react-router-dom";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+import { createFlightReview, createHotelReview, createPackageReview } from "@/redux/slices/reviewsTestimonialsSlice";
 
 const paymentMethods = [
   { value: "qris", label: "QRIS", icon: <QrCode /> },
@@ -58,6 +60,7 @@ function CustomerProfile() {
   const [activeTab, setActiveTab] = useState("account");
   const [selectedBooking, setSelectedBooking] = useState<any>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
 
@@ -73,6 +76,9 @@ function CustomerProfile() {
   const [requestRefund, setRequestRefund] = useState(false);
   const [refundReason, setRefundReason] = useState("");
   const [rescheduleDate, setRescheduleDate] = useState("");
+
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
 
   const { user: profile, isLoading: profileLoading } = useAppSelector((state) => state.auth);
   const { bookings, loading: bookingsLoading, error } = useAppSelector((state) => state.booking);
@@ -200,6 +206,38 @@ function CustomerProfile() {
     }
   };
 
+  console.log("AAAAAAA", selectedBooking)
+
+  const handleReviewSubmit = async () => {
+    const reviewData = {
+      rating,
+      comment,
+    };
+
+    
+    const id = selectedBooking?.bookingHotels[0]?.hotel.id || selectedBooking?.bookingFlights[0]?.flight.id || selectedBooking.travelPackage.agentId;
+
+    console.log("Selected booking ID:", id);
+
+    try {
+      switch (selectedBooking.type) {
+        case "package":
+          await dispatch(createPackageReview({ packageId: id, data: reviewData }));
+          break;
+        case "hotel":
+          await dispatch(createHotelReview({ hotelId: id, data: reviewData }));
+          break;
+        case "flight":
+          await dispatch(createFlightReview({ flightId: id, data: reviewData }));
+          break;
+      }
+
+      setReviewDialogOpen(false);
+    } catch (error) {
+      console.error("Failed to create review:", error);
+    }
+  };
+
   const handlePayment = async () => {
     if (!selectedPaymentMethod) {
       toast.error("Please select a payment method");
@@ -265,6 +303,11 @@ function CustomerProfile() {
     setSelectedBooking(booking);
     setActionType("cancel");
     setCancelDialog(true);
+  };
+
+  const handleReviews = (booking: any) => {
+    setReviewDialogOpen(true);
+    setSelectedBooking(booking);
   };
 
   const handleRequestRefund = (booking: any) => {
@@ -361,6 +404,10 @@ function CustomerProfile() {
     return booking.status === "confirmed" || booking.status === "pending";
   };
 
+  const canReviews = (booking: any) => {
+    return booking.status === "confirmed" && booking.paymentStatus === "paid";
+  };
+
   const canRequestRefund = (booking: any) => {
     return booking.paymentStatus === "paid" && booking.status !== "cancelled";
   };
@@ -383,7 +430,7 @@ function CustomerProfile() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen dark:bg-black pt-20 pb-38 bg-gray-50">
+      <div className="min-h-screen dark:bg-neutral-950 pt-20 pb-38 bg-gray-50">
         <div className="mx-auto max-w-7xl px-4 py-8">
           <div className="mb-8">
             <div className="flex flex-col items-center">
@@ -548,8 +595,29 @@ function CustomerProfile() {
                                       View Details
                                     </Button>
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem>
-                                    {canCancelBooking(booking) && (
+                                  {canReviews(booking) && (
+                                    <DropdownMenuItem>
+                                      <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => handleReviews(booking)}
+                                      >
+                                        <Star className="w-4 h-4 mr-2" />
+                                        Reviews
+                                      </Button>
+                                    </DropdownMenuItem>
+                                  )}
+                                  <DropdownMenuItem onClick={handleChatAgent}>
+                                    <Button
+                                      variant="outline"
+                                      className="mr-auto"
+                                    >
+                                      <MessageCircle className="w-4 h-4 mr-2" />
+                                      Chat with Agent
+                                    </Button>
+                                  </DropdownMenuItem>
+                                  {canCancelBooking(booking) && (
+                                    <DropdownMenuItem>
                                       <Button
                                         variant="outline"
                                         size="sm"
@@ -559,10 +627,10 @@ function CustomerProfile() {
                                         <X className="w-4 h-4 mr-2" />
                                         Cancel
                                       </Button>
-                                    )}
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem>
-                                    {canRequestReschedule(booking) && (
+                                    </DropdownMenuItem>
+                                  )}
+                                  {canRequestReschedule(booking) && (
+                                    <DropdownMenuItem>
                                       <Button
                                         variant="outline"
                                         size="sm"
@@ -572,10 +640,10 @@ function CustomerProfile() {
                                         <RefreshCw className="w-4 h-4 mr-2" />
                                         Reschedule
                                       </Button>
-                                    )}
-                                  </DropdownMenuItem>
-                                  <DropdownMenuItem>
-                                    {canRequestRefund(booking) && (
+                                    </DropdownMenuItem>
+                                  )}
+                                  {canRequestRefund(booking) && (
+                                    <DropdownMenuItem>
                                       <Button
                                         variant="outline"
                                         size="sm"
@@ -585,8 +653,8 @@ function CustomerProfile() {
                                         <CreditCard className="w-4 h-4 mr-2" />
                                         Request Refund
                                       </Button>
-                                    )}
-                                  </DropdownMenuItem>
+                                    </DropdownMenuItem>
+                                  )}
                                 </DropdownMenuContent>
                               </DropdownMenu>
                             </div>
@@ -691,7 +759,6 @@ function CustomerProfile() {
             </TabsContent>
           </Tabs>
 
-          {/* Booking Details Dialog */}
           <Dialog
             open={dialogOpen}
             onOpenChange={setDialogOpen}
@@ -704,7 +771,7 @@ function CustomerProfile() {
               {selectedBooking && (
                 <div className="space-y-6">
                   {/* Booking Header */}
-                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg dark:bg-zinc-800">
                     <div className="flex items-center space-x-3">
                       <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">{getBookingIcon(selectedBooking.type)}</div>
                       <div>
@@ -825,7 +892,7 @@ function CustomerProfile() {
                           </Select>
                         </div>
 
-                        <div className="p-4 bg-gray-50 rounded-lg">
+                        <div className="p-4 bg-gray-50 dark:bg-zinc-800 rounded-lg">
                           <div className="flex items-center justify-between">
                             <span className="font-medium">Total Amount:</span>
                             <span className="text-xl font-bold text-green-600">{formatCurrency(selectedBooking.totalPrice)}</span>
@@ -854,21 +921,40 @@ function CustomerProfile() {
                   )}
                 </div>
               )}
+            </DialogContent>
+          </Dialog>
 
-              <DialogFooter>
+          <Dialog
+            open={reviewDialogOpen}
+            onOpenChange={setReviewDialogOpen}
+          >
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Berikan Ulasan Anda</DialogTitle>
+              </DialogHeader>
+
+              <div className="flex items-center space-x-2 my-2">
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <Star
+                    key={value}
+                    className={cn("h-6 w-6 cursor-pointer transition-colors", rating >= value ? "fill-yellow-400 text-yellow-400" : "text-gray-400")}
+                    onClick={() => setRating(value)}
+                  />
+                ))}
+              </div>
+
+              <Textarea
+                placeholder="Tulis komentar Anda di sini..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+              />
+
+              <DialogFooter className="mt-4">
                 <Button
-                  variant="outline"
-                  onClick={handleChatAgent}
-                  className="mr-auto"
+                  onClick={handleReviewSubmit}
+                  disabled={rating === 0 || comment.trim() === ""}
                 >
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  Chat with Agent
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setDialogOpen(false)}
-                >
-                  Close
+                  Kirim Ulasan
                 </Button>
               </DialogFooter>
             </DialogContent>
