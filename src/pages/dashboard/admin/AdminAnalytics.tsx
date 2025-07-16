@@ -97,13 +97,12 @@ export default function AdminAnalytics() {
     return totalRevenue / adminMonthlyReport.length
   }
 
-  // Calculate revenue by booking type
   const calculateRevenueByType = () => {
     if (!adminMonthlyReport || adminMonthlyReport.length === 0) return []
     
-    const totalPackageRevenue = adminMonthlyReport.reduce((sum, month) => sum + (month.packageBookings * 2500), 0) // Assuming average package value
-    const totalHotelRevenue = adminMonthlyReport.reduce((sum, month) => sum + (month.hotelBookings * 150), 0) // Assuming average hotel value
-    const totalFlightRevenue = adminMonthlyReport.reduce((sum, month) => sum + (month.flightBookings * 800), 0) // Assuming average flight value
+    const totalPackageRevenue = adminMonthlyReport.reduce((sum, month) => sum + (month.packageBookings * 2500), 0) 
+    const totalHotelRevenue = adminMonthlyReport.reduce((sum, month) => sum + (month.hotelBookings * 150), 0) 
+    const totalFlightRevenue = adminMonthlyReport.reduce((sum, month) => sum + (month.flightBookings * 800), 0) 
     
     const total = totalPackageRevenue + totalHotelRevenue + totalFlightRevenue
     
@@ -143,7 +142,6 @@ export default function AdminAnalytics() {
     }))
   }
 
-  // Format agent performance data
   const formatAgentPerformanceData = () => {
     if (!agentPerformances) return []
     
