@@ -455,7 +455,7 @@ function PackageListCard({ travelPackage }: any) {
       {/* Package Image & Basic Info */}
       <div className="flex items-center gap-4">
         <img
-          src={travelPackage.thumbnail ? `http://localhost:3000/${travelPackage.thumbnail}` : "/placeholder-travel.jpg"}
+          src={travelPackage.thumbnail ? `https://travelin.noxturne.my.id/${travelPackage.thumbnail}` : "/placeholder-travel.jpg"}
           alt={travelPackage.title}
           className="w-24 h-20 object-cover rounded-lg"
         />

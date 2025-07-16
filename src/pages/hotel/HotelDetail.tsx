@@ -82,7 +82,7 @@ function HotelDetail() {
 
   useEffect(() => {
     if (currentHotel?.thumbnail) {
-      setSelectedImage(`http://localhost:3000/${currentHotel.thumbnail}`);
+      setSelectedImage(`https://travelin.noxturne.my.id/${currentHotel.thumbnail}`);
     }
   }, [currentHotel]);
 
@@ -99,7 +99,7 @@ function HotelDetail() {
     if (imagePath.startsWith("http")) {
       setSelectedImage(imagePath);
     } else {
-      setSelectedImage(`http://localhost:3000/${imagePath}`);
+      setSelectedImage(`https://travelin.noxturne.my.id/${imagePath}`);
     }
   };
 
@@ -274,11 +274,11 @@ function HotelDetail() {
               {/* Thumbnail as first image */}
               {currentHotel.thumbnail && (
                 <div
-                  className={`relative rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${selectedImage === `http://localhost:3000/${currentHotel.thumbnail}` ? "ring-2 ring-blue-500 ring-offset-2" : "hover:scale-105"}`}
+                  className={`relative rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${selectedImage === `https://travelin.noxturne.my.id/${currentHotel.thumbnail}` ? "ring-2 ring-blue-500 ring-offset-2" : "hover:scale-105"}`}
                   onClick={() => handleImageSelect(currentHotel.thumbnail)}
                 >
                   <img
-                    src={`http://localhost:3000/${currentHotel.thumbnail}`}
+                    src={`https://travelin.noxturne.my.id/${currentHotel.thumbnail}`}
                     alt={`${currentHotel.name} thumbnail`}
                     className="w-full h-20 object-cover"
                     onError={(e) => {
@@ -293,11 +293,11 @@ function HotelDetail() {
               {currentHotel.images.map((imageObj: HotelImage, index: number) => (
                 <div
                   key={imageObj.id || index}
-                  className={`relative rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${selectedImage === `http://localhost:3000/${imageObj.fileUrl}` ? "ring-2 ring-blue-500 ring-offset-2" : "hover:scale-105"}`}
+                  className={`relative rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${selectedImage === `https://travelin.noxturne.my.id/${imageObj.fileUrl}` ? "ring-2 ring-blue-500 ring-offset-2" : "hover:scale-105"}`}
                   onClick={() => handleImageSelect(imageObj.fileUrl)}
                 >
                   <img
-                    src={`http://localhost:3000/${imageObj.fileUrl}`}
+                    src={`https://travelin.noxturne.my.id/${imageObj.fileUrl}`}
                     alt={`${currentHotel.name} image ${index + 1}`}
                     className="w-full h-20 object-cover"
                     onError={(e) => {

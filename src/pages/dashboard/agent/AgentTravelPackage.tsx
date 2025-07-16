@@ -175,7 +175,7 @@ function AgentTravelPackage() {
                       <TableCell>
                         <div className="flex items-center space-x-3">
                           <img
-                            src={`http://localhost:3000/${pkg.thumbnail}`}
+                            src={`https://travelin.noxturne.my.id/${pkg.thumbnail}`}
                             alt={pkg.title}
                             className="w-12 h-12 rounded-lg object-cover"
                             onError={(e) => {

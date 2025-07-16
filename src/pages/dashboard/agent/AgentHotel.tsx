@@ -123,7 +123,7 @@ function AgentHotel() {
                             <div className="flex items-center space-x-3">
                               {hotel.thumbnail && (
                                 <img
-                                  src={`http://localhost:3000/${hotel.thumbnail}`}
+                                  src={`https://travelin.noxturne.my.id/${hotel.thumbnail}`}
                                   alt={hotel.name}
                                   className="w-12 h-12 object-cover rounded"
                                   onError={(e) => {

@@ -376,7 +376,7 @@ function HotelListCard({ hotel }: any) {
       {/* Hotel Image & Basic Info */}
       <div className="flex items-center gap-4">
         <img
-          src={hotel.thumbnail ? `http://localhost:3000/${hotel.thumbnail}` : "/placeholder-hotel.jpg"}
+          src={hotel.thumbnail ? `https://travelin.noxturne.my.id/${hotel.thumbnail}` : "/placeholder-hotel.jpg"}
           alt={hotel.name}
           className="w-24 h-20 object-cover rounded-lg"
         />

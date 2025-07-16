@@ -103,7 +103,7 @@ function PackageDetail() {
 
   useEffect(() => {
     if (currentPackage?.thumbnail) {
-      setSelectedImage(`http://localhost:3000/${currentPackage.thumbnail}`);
+      setSelectedImage(`https://travelin.noxturne.my.id/${currentPackage.thumbnail}`);
     }
   }, [currentPackage]);
 
@@ -116,7 +116,7 @@ function PackageDetail() {
     if (imagePath.startsWith('http')) {
       setSelectedImage(imagePath);
     } else {
-      setSelectedImage(`http://localhost:3000/${imagePath}`);
+      setSelectedImage(`https://travelin.noxturne.my.id/${imagePath}`);
     }
   };
 
@@ -305,14 +305,14 @@ function PackageDetail() {
               {currentPackage.thumbnail && (
                 <div
                   className={`relative rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${
-                    selectedImage === `http://localhost:3000/${currentPackage.thumbnail}` 
+                    selectedImage === `https://travelin.noxturne.my.id/${currentPackage.thumbnail}` 
                       ? 'ring-2 ring-green-500 ring-offset-2' 
                       : 'hover:scale-105'
                   }`}
                   onClick={() => handleImageSelect(currentPackage.thumbnail)}
                 >
                   <img
-                    src={`http://localhost:3000/${currentPackage.thumbnail}`}
+                    src={`https://travelin.noxturne.my.id/${currentPackage.thumbnail}`}
                     alt={`${currentPackage.title} thumbnail`}
                     className="w-full h-20 object-cover"
                     onError={(e) => {
@@ -328,14 +328,14 @@ function PackageDetail() {
                 <div
                   key={imageObj.id || index}
                   className={`relative rounded-lg overflow-hidden cursor-pointer transition-all duration-200 ${
-                    selectedImage === `http://localhost:3000/${imageObj.fileUrl}` 
+                    selectedImage === `https://travelin.noxturne.my.id/${imageObj.fileUrl}` 
                       ? 'ring-2 ring-green-500 ring-offset-2' 
                       : 'hover:scale-105'
                   }`}
                   onClick={() => handleImageSelect(imageObj.fileUrl)}
                 >
                   <img
-                    src={`http://localhost:3000/${imageObj.fileUrl}`}
+                    src={`https://travelin.noxturne.my.id/${imageObj.fileUrl}`}
                     alt={`${currentPackage.title} image ${index + 1}`}
                     className="w-full h-20 object-cover"
                     onError={(e) => {

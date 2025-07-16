@@ -359,7 +359,7 @@ function FlightListCard({ flight }: any) {
       {/* Logo & Rating */}
       <div className="flex items-center gap-4">
         <img
-          src={`http://localhost:3000/${flight.thumnail}`}
+          src={`https://travelin.noxturne.my.id/${flight.thumnail}`}
           alt={flight.airlineName}
           className="w-20 h-16 object-cover rounded-lg"
         />

@@ -226,7 +226,7 @@ function FlightDetail() {
         >
           {currentFlight.thumnail ? (
             <img
-              src={`http://localhost:3000/${currentFlight.thumnail}`}
+              src={`https://travelin.noxturne.my.id/${currentFlight.thumnail}`}
               alt={`${currentFlight.airlineName} Flight`}
               className="w-full h-64 md:h-96 object-cover"
               onError={(e) => {
